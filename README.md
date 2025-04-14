@@ -13,19 +13,3 @@ The state of the game is displayed at the top of the page, including whose turn 
 
 Thank you for playing Tic-Tac-Toe!
 ___
-
-## Jogo da Velha
-
-Bem-vindo ao jogo da Velha! Este jogo permite que dois jogadores joguem um jogo da Velha pela internet.
-
-Para começar um jogo, um jogador deve visitar o site e informar seu nome. Isso criará um novo jogo e o jogador se tornará o jogador 1. O jogo então ficará aguardando outro jogador se juntar.
-
-O jogador 2 pode então visitar o site e adicionar seu nome. Isso fará com que o jogo comece, com o jogador 1 começando.
-
-Os jogadores alternam fazendo movimentos clicando em um quadrado vazio no tabuleiro de jogo. O primeiro jogador a conseguir 3 de seus símbolos em uma linha (horizontalmente, verticalmente ou diagonalmente) ganha o jogo. Se todos os quadrados estiverem preenchidos e nenhum jogador tiver vencido, o jogo é empate.
-
-Caso o jogador abandone o jogo, O jogador vence a partida.
-
-O estado do jogo é exibido no topo da página, incluindo de quem é a vez e o vencedor atual (se houver).
-
-Obrigado por jogar Jogo da Velha!
