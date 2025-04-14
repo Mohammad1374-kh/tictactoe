@@ -8,7 +8,7 @@ import java.util.UUID;
 /**
  * Class representing a Tic-Tac-Toe game.
  *
- * @author Joabson Arley do Nascimento
+ * @author Mohammad Khosravi
  */
 public class TicTacToe {
     private String gameId;
@@ -54,32 +54,25 @@ public class TicTacToe {
      * Check if there is a winner. If a winning combination is found,
      * the winner is set to the corresponding player.
      */
+
     private void checkWinner() {
+        // Check rows and columns
         for (int i = 0; i < 3; i++) {
-            if (Objects.equals(board[i][0], board[i][1]) && Objects.equals(board[i][0], board[i][2])) {
-                if (!Objects.equals(board[i][0], " ")) {
-                    setWinner(Objects.equals(board[i][0], player1) ? player1 : player2);
-                    return;
-                }
-            }
+            checkLine(board[i][0], board[i][1], board[i][2]); // row
+            checkLine(board[0][i], board[1][i], board[2][i]); // column
         }
 
-        for (int i = 0; i < 3; i++) {
-            if (Objects.equals(board[0][i], board[1][i]) && Objects.equals(board[0][i], board[2][i])) {
-                if (!Objects.equals(board[0][i], " ")) {
-                    setWinner(Objects.equals(board[0][i], player1) ? player1 : player2);
-                    return;
-                }
-            }
-        }
+        // Check diagonals
+        checkLine(board[0][0], board[1][1], board[2][2]);
+        checkLine(board[0][2], board[1][1], board[2][0]);
+    }
 
-        if (Objects.equals(board[0][0], board[1][1]) && Objects.equals(board[0][0], board[2][2])) {
-            if (!Objects.equals(board[0][0], " ")) {
-                setWinner(Objects.equals(board[0][0], player1) ? player1 : player2);
-                return;
-            }
+    private void checkLine(String a, String b, String c) {
+        if (!a.equals(" ") && a.equals(b) && a.equals(c)) {
+            setWinner(a.equals(player1) ? player1 : player2);
         }
     }
+
 
     /**
      * Updates the game state based on the current state of the game.

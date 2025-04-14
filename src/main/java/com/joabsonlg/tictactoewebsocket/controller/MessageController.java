@@ -51,7 +51,7 @@ public class MessageController {
         if (game == null) {
             TicTacToeMessage errorMessage = new TicTacToeMessage();
             errorMessage.setType("error");
-            errorMessage.setContent("Não foi possível entrar no jogo. Talvez o jogo já esteja cheio ou ocorreu um erro interno.");
+            errorMessage.setContent("Unable to enter the game. Maybe the game is already full or an internal error occurred.");
             return errorMessage;
         }
         headerAccessor.getSessionAttributes().put("gameId", game.getGameId());

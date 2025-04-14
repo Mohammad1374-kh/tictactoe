@@ -10,7 +10,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * Manager class for the Tic-Tac-Toe games.
  * Handles adding and removing players from games, and storing and retrieving the current games.
  *
- * @author Joabson Arley do Nascimento
+ * @author Mohammad Khosravi
  */
 public class TicTacToeManager {
 
