@@ -17,6 +17,8 @@ import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 
+//TODO: There is no function to send the message to /game.leave , a button should be designed in frontend to do so
+
 /**
  * Controller class for handling WebSocket messages and managing the Tic-Tac-Toe games.
  *
