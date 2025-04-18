@@ -127,6 +127,8 @@ public class MessageController {
         }
     }
 
+    //TODO: handle NullPointer Exception
+
     @EventListener
     public void SessionDisconnectEvent(SessionDisconnectEvent event) {
         StompHeaderAccessor headerAccessor = StompHeaderAccessor.wrap(event.getMessage());

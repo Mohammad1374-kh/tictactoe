@@ -24,6 +24,33 @@ const makeMove = (move) => {
     });
 }
 
+
+/**
+ * Shows a "Back to Home" button after the game ends.
+ */
+const showBackToHomeButton = () => {
+    if (document.querySelector(".back-home-btn")) {
+        return;
+    }
+
+    const wrapper = document.createElement("div");
+    wrapper.style.textAlign = "center";  // This will center inline elements like buttons
+
+    const button = document.createElement("button");
+    button.textContent = "Back to Home";
+    button.className = "back-home-btn";
+    button.onclick = () => {
+        window.location.href = "/index";
+    };
+
+    wrapper.appendChild(button);
+
+    const card = document.querySelector(".card");
+    card.appendChild(wrapper);
+}
+
+
+
 /**
  * An object containing functions to handle each type of message received from the server.
  */
@@ -35,6 +62,8 @@ const messagesTypes = {
         updateGame(message);
         if (message.gameState === 'TIE') toastr.success(`Game over! It's a tie!`);
         else showWinner(message.winner);
+
+        showBackToHomeButton(); // Show the button instead of auto redirect
     },
     "game.joined": (message) => {
         if (game !== null && game.gameId !== message.gameId) return;
@@ -91,6 +120,7 @@ const messageToGame = (message) => {
  * Displays a success message with the name of the winning player.
  * @param {String} winner - The name of the winning player.
  */
+//todo: the diagonal highlight is not okay
 const showWinner = (winner) => {
     toastr.success(`The winner is ${winner}!`);
     const winningPositions = getWinnerPositions(game.board);
@@ -102,6 +132,8 @@ const showWinner = (winner) => {
             cellElement.style.backgroundColor = '#b3e6ff';
         });
     }
+
+
 }
 
 /**
