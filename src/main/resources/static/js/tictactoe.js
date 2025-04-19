@@ -25,29 +25,66 @@ const makeMove = (move) => {
 }
 
 
-/**
- * Shows a "Back to Home" button after the game ends.
- */
-const showBackToHomeButton = () => {
-    if (document.querySelector(".back-home-btn")) {
-        return;
+// /**
+//  * Shows a "Back to Home" button after the game ends.
+//  */
+// const showBackToHomeButton = () => {
+//     if (document.querySelector(".back-home-btn")) {
+//         return;
+//     }
+//
+//     const wrapper = document.createElement("div");
+//     wrapper.style.textAlign = "center";  // This will center inline elements like buttons
+//
+//     const button = document.createElement("button");
+//     button.textContent = "Back to Home";
+//     button.className = "back-home-btn";
+//     button.onclick = () => {
+//         window.location.href = "/index";
+//     };
+//
+//     wrapper.appendChild(button);
+//
+//     const card = document.querySelector(".card");
+//     card.appendChild(wrapper);
+// }
+//
+// const setupLeaveGameButton = (player) => {
+//     const leaveGameBtn = document.getElementById("leaveGameBtn");
+//     if (leaveGameBtn) {
+//         leaveGameBtn.addEventListener("click", () => {
+//             const confirmLeave = confirm("Are you sure you want to leave the game? If you do, you will lose.");
+//             if (confirmLeave) {
+//                 sendMessage({
+//                     type: "game.leave",
+//                     player: player
+//                 });
+//             }
+//         });
+//     }
+// };
+
+
+const setupBackToHomeButton = () => {
+    const backToHomeBtn = document.getElementById("backToHomeBtn");
+    if (backToHomeBtn) {
+        backToHomeBtn.addEventListener("click", () => {
+            // console.log("game State: "+game.gameState);
+            if (game && (game.gameState === 'PLAYER1_TURN' || game.gameState === 'PLAYER2_TURN' ) ) {
+                const confirmLeave = confirm("Are you sure you want to leave the game? You will forfeit and your opponent will win." );
+                if (confirmLeave) {
+                    sendMessage({
+                        type: "game.leave",
+                        player: player
+                    });
+                    window.location.href = "/index";
+                }
+            } else {
+                window.location.href = "/index";
+            }
+        });
     }
-
-    const wrapper = document.createElement("div");
-    wrapper.style.textAlign = "center";  // This will center inline elements like buttons
-
-    const button = document.createElement("button");
-    button.textContent = "Back to Home";
-    button.className = "back-home-btn";
-    button.onclick = () => {
-        window.location.href = "/index";
-    };
-
-    wrapper.appendChild(button);
-
-    const card = document.querySelector(".card");
-    card.appendChild(wrapper);
-}
+};
 
 
 
@@ -63,7 +100,7 @@ const messagesTypes = {
         if (message.gameState === 'TIE') toastr.success(`Game over! It's a tie!`);
         else showWinner(message.winner);
 
-        showBackToHomeButton(); // Show the button instead of auto redirect
+        // showBackToHomeButton(); // Show the button instead of auto redirect
     },
     "game.joined": (message) => {
         if (game !== null && game.gameId !== message.gameId) return;
@@ -84,6 +121,10 @@ const messagesTypes = {
     "game.left": (message) => {
         updateGame(message);
         if (message.winner) showWinner(message.winner);
+        else {
+            toastr.warning("Opponent left the game. You win by default.");
+        }
+        // showBackToHomeButton();
     },
     "error": (message) => {
         toastr.error(message.content);
@@ -146,11 +187,13 @@ const joinGame = () => {
         type: "game.join",
         player: playerName
     });
+
 }
 
 /**
  * Connects the STOMP client to the server and subscribes to the "/topic/game.state" topic.
  */
+
 const connect = () => {
     const socket = new SockJS('/ws');
     stompClient = Stomp.over(socket);
@@ -162,6 +205,17 @@ const connect = () => {
     });
 }
 
+// const connect = () => {
+//     const socket = new SockJS('/ws');
+//     stompClient = Stomp.over(socket);
+//     stompClient.connect({}, function (frame) {
+//         stompClient.subscribe('/topic/game.state', function (message) {
+//             handleMessage(JSON.parse(message.body));
+//         });
+//         loadGame();
+//     });
+// }
+
 /**
  * Attempts to load a game by joining with the player's previously stored name, or prompts the player to enter their name if no name is stored.
  */
@@ -172,9 +226,11 @@ const loadGame = () => {
             type: "game.join",
             player: playerName
         });
+
     } else {
         joinGame();
     }
+
 }
 
 /**
@@ -239,4 +295,5 @@ const getWinnerPositions = (board) => {
 
 window.onload = function () {
     connect();
+    setupBackToHomeButton();
 }

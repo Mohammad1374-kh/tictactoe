@@ -17,7 +17,8 @@ import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 
-//TODO: There is no function to send the message to /game.leave , a button should be designed in frontend to do so
+import java.sql.SQLOutput;
+
 
 /**
  * Controller class for handling WebSocket messages and managing the Tic-Tac-Toe games.
@@ -77,6 +78,9 @@ public class MessageController {
         if (game != null) {
             TicTacToeMessage gameMessage = gameToMessage(game);
             gameMessage.setType("game.left");
+            String player1= gameMessage.getPlayer1();
+            String player2= gameMessage.getPlayer2();
+            gameMessage.setWinner(message.getPlayer().equals(player1)? player2: player1 ); // Set the winner
             messagingTemplate.convertAndSend("/topic/game." + game.getGameId(), gameMessage);
         }
     }
@@ -113,11 +117,9 @@ public class MessageController {
 
         if (game.getTurn().equals(player)) {
             game.makeMove(player, move);
-
             TicTacToeMessage gameStateMessage = new TicTacToeMessage(game);
             gameStateMessage.setType("game.move");
             this.messagingTemplate.convertAndSend("/topic/game." + gameId, gameStateMessage);
-
             if (game.isGameOver()) {
                 TicTacToeMessage gameOverMessage = gameToMessage(game);
                 gameOverMessage.setType("game.gameOver");
@@ -159,7 +161,7 @@ public class MessageController {
             ticTacToeManager.removeGame(gameId);
         }
     }
-
+//TODO: The game winner logic is not working right
     private TicTacToeMessage gameToMessage(TicTacToe game) {
         TicTacToeMessage message = new TicTacToeMessage();
         message.setGameId(game.getGameId());

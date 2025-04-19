@@ -118,18 +118,23 @@ body {
     background-color: #45a049;
 }
 
-.back-home-btn {
-    background-color: red;
+
+#backToHomeBtn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 15px 30px;
+    font-size: 18px;
+    background-color: #ff4d4d;
     color: white;
-    padding: 16px 32px;      /* Increased padding for a larger size */
-    margin: 10px;
-    font-size: 20px;         /* Larger text */
     border: none;
-    border-radius: 12px;     /* Rounded corners */
+    border-radius: 8px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    z-index: 1000;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    transition: background-color 0.2s ease-in-out;
 }
 
-.back-home-btn:hover {
-    background-color: darkred;
+#backToHomeBtn:hover {
+    background-color: #e60000;
 }
